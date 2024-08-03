@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int evaluateExpression(const string& s) {
+    long long result = 0;
+    long long lastNumber = 0;
+    long long currentNumber = 0;
+    char operation = '+';  // Initialize with '+' to handle the first number
+
+    for (int i = 0; i < s.size(); ++i) {
+        char currentChar = s[i];
+
+        // Check if the character is a digit
+        if (currentChar >= '0' && currentChar <= '9') {
+            currentNumber = (currentNumber * 10) + (currentChar - '0');
+        }
+
+        // If it's an operator or the end of the string
+        if ((currentChar < '0' || currentChar > '9') && currentChar != ' ' || i == s.size() - 1) {
+            if (operation == '+') {
+                result += lastNumber;
+                lastNumber = currentNumber;
+            } else if (operation == '-') {
+                result += lastNumber;
+                lastNumber = -currentNumber;
+            } else if (operation == '*') {
+                lastNumber *= currentNumber;
+            } else if (operation == '/') {
+                lastNumber /= currentNumber;
+            }
+
+            operation = currentChar;  // Update the operation
+            currentNumber = 0;  // Reset current number
+        }
+    }
+
+    result += lastNumber;  // Add the last number to the result
+
+    return result;
+}
+
+int main() {
+    string s = "3+2*2";
+    cout << "Output: " << evaluateExpression(s) << endl;
+    return 0;
+}
