@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+//Define the Employee class
+class Employee {
+public:
+    string name;
+    int id;
+    double salary;
+
+//Print method
+    void print(){
+        cout << "Employee Name: " << name
+             << ", ID: " << id
+             << ", Salary: " << salary << endl;
+    }
+};
+
+//Define the Stack class
+class Stack {
+public:
+    Employee* stack;
+    int top;
+    int capacity;
+
+public:
+    Stack(int size) {
+        stack = new Employee[size];
+        top = -1;
+        capacity = size;
+    }
+//Push operation to add an employee to the stack
+void push( Employee& employee) {
+        if (top == capacity - 1) {
+            cout << "Stack overflow. Cannot push employee." << endl;
+            return;
+        }
+        stack[++top] = employee;
+    }
+
+//Pop operation to remove an employee from the stack
+void pop() {
+        if (top == -1) {
+            cout << "Stack underflow. Cannot pop employee." << endl;
+            return;
+        }
+        --top;
+    }
+
+//Peek operation to view the top employee without removing
+Employee peek(){
+        if (top == -1) {
+            cout << "Stack is empty. Cannot peek." << endl;
+            Employee emptyEmployee = {"", -1, 0.0};
+            return emptyEmployee;
+        }
+        return stack[top];
+    }
+
+// Print the stack contents
+void print(){
+        if (top == -1) {
+            cout << "Stack is empty." << endl;
+            return;
+        }
+        for (int i = top; i >= 0; --i) {
+            stack[i].print();
+        }
+    }
+};
+
+int main() {
+    int size;
+    cout << "Enter the size of the stack: ";
+    cin >> size;
+    Stack employeeStack(size);
+
+    int numberOfEmployees;
+    cout << "Enter the number of employees to push onto the stack: ";
+    cin >> numberOfEmployees;
+
+    for (int i = 0; i < numberOfEmployees; ++i) {
+        Employee emp;
+
+        cout << "Enter details for employee " << i + 1 << ":" << endl;
+        cout << "Name: ";
+        cin >> emp.name;
+        cout << "ID: ";
+        cin >> emp.id;
+        cout << "Salary: ";
+        cin >> emp.salary;
+
+        employeeStack.push(emp);
+    }
+
+    cout << "\nStack contents after pushes:" << endl;
+    employeeStack.print();
+
+    employeeStack.pop();
+    cout << "\nStack contents after pop:" << endl;
+    employeeStack.print();
+
+    cout << "\nPeek at top employee:" << endl;
+    Employee topEmployee = employeeStack.peek();
+    topEmployee.print();
+
+    return 0;
+}
