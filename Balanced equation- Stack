@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+// Define the stack structure
+typedef struct s {
+    char elem[100];
+    int top;
+} stack;
+
+// Function to push an item onto the stack
+void push(stack *s, char item) {
+    if (s->top == 99) // Check if stack is full (assuming size is 100)
+        cout << "stack full";
+    else {
+        s->top = s->top + 1;
+        s->elem[s->top] = item;
+    }
+}
+
+// Function to check if the stack is empty
+bool isempty(stack *s) {
+    if (s->top == -1) return true;
+    return false;
+}
+
+// Function to pop an item from the stack
+char pop(stack *s) {
+    if (s->top == -1) {
+        cout << "stack empty";
+        return -1;
+    } else {
+        return s->elem[s->top--]; // Pop the top element
+    }
+}
+
+// Function to check if brackets are balanced
+bool areBracketsBalanced(string expr) {
+    char x;
+    stack s;
+    s.top = -1; // Initialize stack top
+
+    // Traverse the expression
+    for (int i = 0; i < expr.length(); i++) {
+        if (expr[i] == '(' || expr[i] == '[' || expr[i] == '{') {
+            // Push the opening bracket onto the stack
+            push(&s, expr[i]);
+        } else if (expr[i] == ')' || expr[i] == ']' || expr[i] == '}') {
+            // If stack is empty, the brackets are unbalanced
+            if (isempty(&s))
+                return false;
+
+            switch (expr[i]) {
+                case ')':
+                    x = pop(&s);
+                    if (x != '(')
+                        return false;
+                    break;
+
+                case '}':
+                    x = pop(&s);
+                    if (x != '{')
+                        return false;
+                    break;
+
+                case ']':
+                    x = pop(&s);
+                    if (x != '[')
+                        return false;
+                    break;
+            }
+        }
+    }
+
+    // Check if stack is empty, meaning all brackets are matched
+    return isempty(&s);
+}
+
+int main() {
+    string expr1 = "{ a + b} - { c- d}";
+    string expr2 = "{a+b} - c-d}";
+    string expr3 = "{a+b} - }c-d{";
+
+    cout << (areBracketsBalanced(expr1) ? "Balanced" : "Unbalanced") << endl;
+    cout << (areBracketsBalanced(expr2) ? "Balanced" : "Unbalanced") << endl;
+    cout << (areBracketsBalanced(expr3) ? "Balanced" : "Unbalanced") << endl;
+
+    return 0;
+}
