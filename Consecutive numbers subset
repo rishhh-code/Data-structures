@@ -1,0 +1,34 @@
+#include<iostream>
+using namespace std;
+int sub(int arr[],int n)
+{
+int c=1;
+for(int i=1;i<n;i++)
+{
+if(arr[i-1]!=arr[i]-1)
+{
+c++;
+}
+}
+cout<<"no of array :"<<c<<endl;}
+int main(){
+    int n;
+    int arr[50];
+    cout<<"enter the no of elements in array:"<<endl;
+    cin>>n;
+    cout<<"enter the array:"<<endl;
+    for(int k=0;k<n;k++){
+    cin>>arr[k];
+    }
+for(int i=0;i<n-1;i++){
+for(int j=0;j<n;j++){
+if(arr[j]>arr[j+1])
+{
+int temp=arr[j];
+arr[j]=arr[j+1];
+arr[j+1]=temp;
+}
+}
+}
+sub(arr,n);
+    return 0;}
