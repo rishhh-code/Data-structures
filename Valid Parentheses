@@ -1,0 +1,28 @@
+#include <stack>
+#include <string>
+using namespace std;
+int paranthesis(string s) {
+    stack<int> stack1;
+    int n = s.length();
+    int valid = 0;
+    stack1.push(-1); // Handle the firstack  character (parantehsis)
+
+    for (int i = 0; i < n; i++) {
+        if (s[i] == '(') {
+            stack1.push(i);
+        } else {
+            stack1.pop();
+            if (!stack1.empty()) {
+                valid = max(valid, i - stack1.top());}
+        }
+    }
+    return valid;
+}
+
+int main() {
+    string str;
+    cout<<"enter the string of paranthesis:"<<endl;
+    cin>>str;
+    cout << paranthesis(str) << endl;
+    return 0;
+}
