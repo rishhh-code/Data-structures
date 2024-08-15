@@ -1,0 +1,59 @@
+#include<iostream>
+using namespace std;
+class Node{
+public:
+string data;
+Node *next;
+Node *prev;
+};
+void push(Node**head,string data){
+Node *new_node=new Node();
+new_node->data=data;
+if(*head==NULL){
+*head=new_node;}
+else{
+new_node->next= *head;
+(*head)->prev=new_node;
+*head=new_node;
+}
+}
+Node *middle(Node*head,string data)
+{
+Node *curr=head ,*newnode;
+int count=1;
+while(curr!=NULL)
+{
+count++;
+curr=curr->next;
+}
+curr=head;
+for(int i=1;i<count/2;i++)
+{
+curr=curr->next;
+newnode=new Node();
+newnode->data=data;
+newnode->next=curr->next;
+curr->next=newnode;
+}
+}
+void print(Node *n)
+{
+while(n!=NULL)
+{
+cout<<n->data<<" ";
+n=n->next;
+}
+cout<<"\n";
+}
+int main()
+{
+Node *head=NULL;
+push(&head,"giraffe");
+push(&head,"zebra");
+push(&head,"dog");
+push(&head,"cat");
+print(head);
+middle(head,"godzilla");
+print(head);
+return 0;
+}
