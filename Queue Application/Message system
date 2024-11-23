@@ -1,0 +1,37 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class intQ { public:
+	string arr[50];
+	int n, fronts = -1, rear = -1;
+	intQ(int sizes) { n = sizes; }
+	void enqueue(string data) { if ((rear + 1) % n == fronts) {
+        	cout << "Queue is full" << endl;  return; }
+    	if (fronts == -1) {
+        	fronts = rear = 0;
+    	} else { rear = (rear + 1) % n; }
+    	arr[rear] = data; }
+	void dequeue() {if (fronts == -1) {
+        	cout << "Queue is empty" << endl;n } else {
+        	if (fronts == rear) { fronts = rear = -1;} 
+           else { fronts = (fronts + 1) % n;  }}}
+	void display() {
+    	if (fronts == -1) {
+        	cout << "Queue is empty" << endl; return; }
+    	cout << "Displaying the queue:" << endl;
+    	int i = fronts;
+    	while (i != rear) {
+        	cout << arr[i] << " ";
+        	i = (i + 1) % n; }
+    	cout << arr[rear] << endl; }};
+int main() {
+	int n;  string data;
+	cout << "Enter n: "; cin >> n; 
+	intQ q(n); 
+	cout << "Enter the elements of the queue: " << endl;
+	for (int i = 0; i < n; i++) { cin >> data;
+    	q.enqueue(data); }
+	q.display();
+	q.dequeue();
+	q.display();
+	return 0;}
