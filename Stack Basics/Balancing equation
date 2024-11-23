@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-// Define the stack structure
+// Define the stack structure 
 typedef struct s {
     char elem[100];
     int top;
