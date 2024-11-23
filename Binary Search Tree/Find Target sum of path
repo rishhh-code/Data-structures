@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+class TreeNode {
+public:
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int value) : val(value), left(NULL), right(NULL) {}
+};
+
+// Function to insert a new value into the BST
+TreeNode* insert(TreeNode* node, int value) {
+    if (node == NULL) {
+        return new TreeNode(value);
+    }
+
+    if (value < node->val) {
+        node->left = insert(node->left, value);
+    } else {
+        node->right = insert(node->right, value);
+    }
+
+    return node;
+}
+
+// Function to check if there exists a root-to-leaf path with the given sum
+bool hasPathSum(TreeNode* node, int sum) {
+    if (node == NULL) {
+        return false; // No path in an empty tree
+    }
+
+    sum -= node->val;
+
+    // If it's a leaf node, check if the sum is zero
+    if (node->left == NULL && node->right == NULL) {
+        return sum == 0;
+    }
+
+    // Recursively check left and right subtrees
+    return hasPathSum(node->left, sum) || hasPathSum(node->right, sum);
+}
+
+int main() {
+    TreeNode* root = NULL;
+    int numValues, value, targetSum;
+
+    cout << "Enter the no of values into the BST: ";
+    cin >> numValues;
+
+    cout << "Enter the values: ";
+    for (int i = 0; i < numValues; ++i) {
+        cin >> value;
+        root = insert(root, value);
+    }
+    cout << "Enter the target sum: ";
+    cin >> targetSum;
+    if (hasPathSum(root, targetSum)) {
+        cout << "A path with sum " << targetSum << " exists." << endl;
+    } else {
+        cout << "No path with sum " << targetSum << " exists." << endl;   }
+
+    return 0;}
