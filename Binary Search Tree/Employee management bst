@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Employee {
+public:
+    string name;
+    double salary;
+    string dept;
+    Employee* left;
+    Employee* right;
+    Employee(string n, double s, string d)
+        : name(n), salary(s), dept(d), left(NULL), right(NULL) {}};
+class EMP2 {
+public:
+    Employee* root;
+
+    void ADD(Em
+ployee*& node, Employee* newEmp) {
+        if (node == NULL) {
+            node = newEmp;
+        } else if (newEmp->salary < node->salary) {
+            ADD(node->left, newEmp);
+        } else {
+            ADD(node->right, newEmp);}
+    }  void display(Employee* node) {
+        if (node != NULL) {
+            display(node->left);
+            cout << "Name: " << node->name << ", Salary: " << node->salary
+                 << ", Dept: " << node->dept << endl;
+            display(node->right);}}
+    Employee* high(Employee* node) {
+        if (node == NULL) return NULL;
+        Employee* highest = NULL;
+        if (node->dept == "sales") {
+            highest = node;   }
+        Employee* leftH = high(node->left);
+        Employee* rightH = high(node->right);
+        if (leftH && (!highest || leftH->salary > highest->salary)) {
+            highest = leftH; }
+        if (rightH && (!highest || rightH->salary > highest->salary)) {
+            highest = rightH;  }
+        return highest;}
+    EMP2() : root(NULL) {}
+    void ADD(string name, double salary, string dept) {
+        Employee* newEmp = new Employee(name, salary, dept);
+        ADD(root, newEmp);  }
+    void display() {
+        display(root);   }
+    Employee* high() {
+        return high(root); }};
+int main() { EMP2 e;
+    e.ADD("Varsh", 6789, "sales");
+    e.ADD("Deeksh", 11111, "marketing");
+    e.ADD("Rish", 0000, "production");
+    e.ADD("Yoga", 2222, "sales");
+    cout << "Employee Hierarchy:\n";
+    e.display();
+    Employee* highS = e.high();
+    if (highS) {
+        cout << "\nHighest Salary in Sales:\n";
+        cout << "Name: " << highS->name
+             << ", Salary: " << highS->salary
+             << ", Dept: " << highS->dept << endl;
+    } else {
+        cout << "No employees found in Sales dept." << endl;
+    }return 0;}
