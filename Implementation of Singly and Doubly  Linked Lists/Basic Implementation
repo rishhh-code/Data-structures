@@ -1,0 +1,67 @@
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+    int value;
+    Node* next;
+};
+void insertfront(Node** head,int value)
+{
+    Node* first=new Node();
+    first->value=value;
+    first->next=*head;
+    *head=first;
+}
+Node* insertatbeg(Node *head,int value)
+{
+    Node*new_Node=new Node();
+    new_Node->value=value;
+    new_Node->next=head;
+    return new_Node;
+}
+Node* deleteatend(Node* head)
+{
+    Node* temp=head;
+    Node* p=temp;
+    Node* q=temp->next;
+    while(p->next!=NULL && q->next!=NULL)
+    {
+        p=p->next;
+        q=q->next;
+    }
+    p->next=NULL;
+    delete q;
+}
+void print(Node* head)
+{
+    Node *temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->value<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
+int main()
+{
+    int n;
+    Node* head=NULL;
+    insertfront(&head,3);
+    insertfront(&head,5);
+    insertfront(&head,8);
+    insertfront(&head,24);
+    insertfront(&head,12);
+    print(head);
+
+    cout<<"enter the element to be added at front:";
+    cin>>n;
+    head=insertatbeg(head,n);
+    print(head);
+    cout<<"after deleting the last element:";
+    deleteatend(head);
+
+
+    print(head);
+    return 0;
+}
