@@ -1,0 +1,51 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Node { public:
+    string data;  
+    int year; int rating;   Node* left; Node* right;
+    Node(string name, int yr, int rate) : data(name), year(yr), rating(rate), left(NULL), right(NULL) {}};
+Node* insert(Node* root, string data, int year, int rating) { if (!root) return new Node(data, year, rating);
+    if (rating < root->rating) root->left = insert(root->left, data, year, rating);
+    else root->right = insert(root->right, data, year, rating);
+    return root;}
+Node* deleteDup(Node* root, int rating) {
+    if (!root) return root;
+    if (rating < root->rating) root->left = deleteDup(root->left, rating);
+    else if (rating > root->rating) root->right = deleteDup(root->right, rating);
+    else {
+        if (!root->left) { Node* temp = root->right; delete root; return temp; }
+        if (!root->right) { Node* temp = root->left; delete root; return temp; }
+        Node* successor = root->right;
+        while (successor && successor->left) successor = successor->left;
+root->data = successor->data, root->year = successor->year, root->rating = successor->rating;
+root->right = deleteDup(root->right, successor->rating;}return root;}bool search(Node* root, string data) {
+    return root ? (root->data == data || (data < root->data ? search(root->left, data) : search(root->right, data))) : false;}
+void display(Node* root) {  if (!root) return;
+    display(root->left);
+cout << "Movie: " << root->data << ", Year: " << root->year << ", Rating: " << root->rating << endl;
+    display(root->right);}
+void listMoviesByYear(Node* root, int year) { if (!root) return;
+    listMoviesByYear(root->left, year);
+    if (root->year == year) cout << "Movie: " << root->data << ", Year: " << root->year << ", Rating: " << root->rating << endl;
+    listMoviesByYear(root->right, year);}
+int main() { Node* root = NULL;
+    int op, year, rating;
+    string data;
+    do {
+        cout << "\n1) Insert movie  2) Delete by rating  3) Search movie 4) List by year  5) Exit Choose: ";  cin >> op;
+        switch (op) {
+            case 1:
+                cout << "Movie name, year, rating: ";
+                cin >> ws;
+ getline(cin, data);
+ cin >> year >> rating;
+                root = insert(root, data, year, rating); break;
+            case 2:
+                cout << "Rating to delete: "; cin >> rating;
+                root = deleteDup(root, rating); cout << "Updated movie list:\n"; display(root); break;
+            case 3:
+                cout << "Movie to search: "; cin >> ws; getline(cin, data);
+                break;
+case 4:
+                cout << "Year to list: "; cin >> year;  cout << "Movies in " << year << ":\n"; listMoviesByYear(root, year); break; } } while (op!= 5); return 0;}
