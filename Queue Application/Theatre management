@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class intQ {
+private:
+	string* queue; int front,rear, cap, sz, seats;
+public:
+	intQ(int s, int qSize): seats(s), front(0), rear(-1), sz(0), cap(qSize) {
+    	queue = new string[qSize]; }
+	void Enqueue(const string& name) {
+    	if (sz == cap) {
+        	cout << "Queue full. Cannot add " << name << "." << endl;  return; }
+    	rear = (rear + 1) % cap;
+    	queue[rear] = name; sz++;
+    	cout << name << " added to the queue." << endl; }
+	void Dequeue() {
+    	if (sz == 0) {
+        	cout << "No customers in the queue." << endl; return; }
+    	string name = queue[front];
+    	front = (front + 1) % cap; sz--;
+    	if (CheckSeats()) {
+        	Book(name);} else {
+        	cout << "Sorry, " << name << ". Tickets sold out." << endl; }}
+	bool CheckSeats() {
+    	return seats > 0; }
+	void Book(const string& name) { seats--;
+    	cout << "Ticket booked for " << name << ". Seats remaining: " << seats << endl; }};
+      int main() { int s, q, count;
+	cout << "Enter the number of available seats: "; cin >> s;
+	cout << "Enter the capacity of the queue: "; cin >> q; intQ ticketQueue(s, q);
+	cout << "Enter the number of customers: "; cin >> count;
+	string customerName;
+	for (int i = 0; i < count; i++) {
+    	cout << "Enter customer name: "; cin >> customerName;
+    	ticketQueue.Enqueue(customerName); }
+	for (int i = 0; i < count; i++) { ticketQueue.Dequeue(); } return 0;}
