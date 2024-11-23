@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+class Node {
+    public:
+    int data;
+    Node *next;
+};
+
+void deletenode(Node *&head, int key) {
+    if (head == NULL)
+        return;
+
+    Node *curr = head, *prev = NULL;
+
+    // Traverse to findthe key
+    do {
+        if (curr->data == key) {
+            // Found the node, break loop
+            break;
+        }
+        prev = curr;
+        curr = curr->next;
+    } while (curr != head);
+
+    // If key was not found
+    if (curr == head && curr->data != key) {
+        cout << "Key not found in the list." << endl;
+        return;
+    }
+
+    // If the node to be deleted is the only node in the list
+    if (curr->next == head) {
+        head = NULL;
+    } else {
+        // If more than one node, adjust the pointers
+        if (curr == head) {
+            prev = head;
+            while (prev->next != head)
+                prev = prev->next;
+            head = curr->next;
+            prev->next = head;
+        } else if (curr->next == head) {
+            prev->next = head;
+        } else {
+            prev->next = curr->next;
+        }
+    }
+}
+//reverse order
+Node* printrev(Node* head) {
+    if (head == NULL)
+        return NULL;
+
+    Node* prev = NULL;
+    Node* current = head;
+    Node* next = NULL;
+
+    // Traverse and reverse the pointers
+    do {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    } while (current != head);
+
+    // Adjust the head to point to the last node after reversing
+    head->next = prev;
+
+    // Now prev points to the new head of the reversed list
+    return prev;
+}
+
+
+void insertbeg(Node *&head, int data) {
+    Node *newNode = new Node;
+    newNode->data = data;
+    newNode->next = head;
+
+    // If the linked list is not empty then set the next of last node
+    if (head != NULL) {
+        Node *temp = head;
+        while (temp->next != head) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    } else {
+        newNode->next = newNode; // For the first node
+    }
+    head = newNode; // Move the head to point to the new node
+}
+
+// Function to print the Circular Linked List
+void display(Node *head) {
+    if (head == NULL)
+        return;
+
+    Node *temp = head;
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+    cout << endl;
+}
+
+int main() {
+    Node *head = NULL;
+    int keyy;
+    Node* x;
+    insertbeg(head, 5);
+    insertbeg(head, 4);
+    insertbeg(head, 3);
+    insertbeg(head, 2);
+    insertbeg(head, 1);
+    cout << "C.Linked List: ";
+    display(head);
+    cout<<"enter key value:"<<endl;
+    cin>>keyy;
+    cout << "Deleting node with key " << keyy << ""<< endl;
+    deletenode(head, keyy);
+    x=printrev(head);
+    display(x);
+    return 0;
+}
